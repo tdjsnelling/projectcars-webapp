@@ -1,0 +1,27 @@
+li {
+	list-style-type: none;
+}
+
+.info {
+	padding: 25px;
+}
+
+.name {
+    font-family: Arial;
+    color: #555555;
+}
+
+.nums {
+	font-family: monospace;
+	color: #555555;
+}
+
+.price-up {
+	font-family: monospace;
+	color: #55aa55;
+}
+
+.price-down {
+	font-family: monospace;
+	color: #aa5555;
+}

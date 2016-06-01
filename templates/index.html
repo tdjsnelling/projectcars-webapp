@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+		<title>Project CARS</title>
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+						<div class="navbar-header">		 
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						 		<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+							</button> <a class="navbar-brand" href="#"><b>Project CARS </b>Web Telemetry <span class="badge">ALPHA</span></a>
+						</div>
+				
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							
+						</div>
+				
+					</nav>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-3">
+					<div class="panel panel-default">
+  						<div class="panel-heading">Car Information</div>
+  							<div class="panel-body">
+  								<p>Car: <span id="car">0000</span></p>
+  								<p>Class: <span id="class">0000</span></p>
+  								<hr>
+    							<p>Speed: <span id="speed">0000</span></p>
+    							<p>RPM: <span id="rpm">0000</span></p>
+    							<p>Gear: <span id="gear">0000</span></p>
+    							<hr>
+    							<p>Oil Temperature: <span id="gear">0000</span></p>
+    							<p>Oil Pressure: <span id="gear">0000</span></p>
+    							<p>Water Temperature: <span id="gear">0000</span></p>
+    							<p>Water Pressure: <span id="gear">0000</span></p>
+  							</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-default">
+		  						<div class="panel-heading">Live Visuals</div>
+		  							<div class="panel-body">
+		  								<p>Throttle %</p>
+		  								<div class="progress">
+											<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+												<span class="sr-only">60% Complete</span>
+											</div>
+										</div>
+
+										<p>Brake %</p>
+		  								<div class="progress">
+											<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+												<span class="sr-only">60% Complete</span>
+											</div>
+										</div>
+
+										<p>Fuel Level</p>
+		  								<div class="progress">
+											<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+												<span class="sr-only">60% Complete</span>
+											</div>
+										</div>
+		  							</div>
+		  					</div>
+		  				</div>
+					</div>
+				</div>
+
+				<div class="col-md-3">
+					<div class="panel panel-default">
+  						<div class="panel-heading">Track Information</div>
+  							<div class="panel-body">
+  								<p>Location: <span id="location">0000</span></p>
+  								<p>Variant: <span id="variant">0000</span></p>
+  								<p>Length: <span id="length">0000</span></p>
+    							<p>Track Temp.: <span id="tTemp">0000</span></p>
+    							<p>Air Temp.: <span id="aTemp">0000</span></p>
+    							<p>Wind Speed: <span id="wSpeed">0000</span></p>
+  							</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-default">
+		  						<div class="panel-heading">Car Diagnostics</div>
+		  							<div class="panel-body">
+		    							<p>Tyre Temperature</p>
+		    							<ul class="list-group row">
+											<li class="list-group-item col-xs-6">
+												<span class="badge">000</span>
+												<p>Front Left</p>
+											</li>
+											<li class="list-group-item col-xs-6">
+												<span class="badge">000</span>
+												<p>Front Right</p>
+											</li>
+											<li class="list-group-item col-xs-6">
+												<span class="badge">000</span>
+												<p>Rear Left</p>
+											</li>
+											<li class="list-group-item col-xs-6">
+												<span class="badge">000</span>
+												<p>Rear Right</p>
+											</li>
+										</ul>
+
+										<p>Brake Temperature</p>
+		    							<ul class="list-group row">
+											<li class="list-group-item col-xs-6">
+												<span class="badge">000</span>
+												<p>Front Left</p>
+											</li>
+											<li class="list-group-item col-xs-6">
+												<span class="badge">000</span>
+												<p>Front Right</p>
+											</li>
+											<li class="list-group-item col-xs-6">
+												<span class="badge">000</span>
+												<p>Rear Left</p>
+											</li>
+											<li class="list-group-item col-xs-6">
+												<span class="badge">000</span>
+												<p>Rear Right</p>
+											</li>
+										</ul>
+
+										<p>Aero Damage: <span id="aDamage">000</span></p>
+										<p>Engine Damage: <span id="eDamage">000</span></p>
+		  							</div>
+							</div>
+						</div>
+		  			</div>
+				</div>
+
+				<div class="col-md-3">
+					<div class="panel panel-default">
+  						<div class="panel-heading">Graphs</div>
+  							<div class="panel-body">
+  								<p>Speed</p>
+  								<div class="graph" id="speedPlot"></div>
+
+  								<p>Engine RPM / Gear</p>
+  								<div class="graph" id="rpmPlot"></div>
+
+  								<p>Throttle / Brake</p>
+  								<div class="graph" id="brakePlot"></div>
+  							</div>
+					</div>
+				</div>
+
+				<div class="col-md-3">
+					<div class="panel panel-default">
+  						<div class="panel-heading">Timings</div>
+  							<div class="panel-body">
+    							<table class="table">
+    								<tr>
+    									<td>Lap</td>
+    									<td>Split 1</td>
+    									<td>Split 2</td>
+    									<td>Split 3</td>
+    								</tr>
+    								<tr>
+    									<td>00.000</td>
+    									<td>00.000</td>
+    									<td>00.000</td>
+    									<td>00.000</td>
+    								</tr>
+    							</table>
+  							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			$(document).ready(function() {
+				ajaxd();
+				setInterval("ajaxd()", 500);
+			});
+
+			// arrays for graphing
+			var graph_speed = [];
+			var graph_rpm = [];
+			var graph_gear = [];
+			var graph_throttle_perc = [];
+			var graph_brake_perc = [];
+
+			function ajaxd() { 
+				var msg = $.ajax({type: "GET", url: "/getData", async: false}).responseText;
+				var sData = JSON.parse(msg);
+
+				graph_speed.push()
+				graph_rpm.push()
+				graph_gear.push()
+				graph_throttle_perc.push()
+				graph_brake_perc.push()
+
+				$("#speed").text(sData[0]);
+
+				if (/* laptime */ == 0) {
+					lap_update();
+				}
+			}
+
+			function lap_update() {
+				// plot graphs
+				// append times
+			}
+
+			speedPlot = document.getElementById('speedPlot');
+			Plotly.plot(speedPlot, [{ x: [1, 2, 3, 4, 5], y: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});
+        </script>
+	</body>
+</html>

@@ -1,0 +1,34 @@
+0	car
+1	class
+2	speed
+3	rpm
+4	max rpm
+5	gear
+6	oil temp
+7	oil pres
+8	water temp
+9	water pres
+10	throttle %
+11	brake %
+12	fuel level
+13	fuel capacity
+14	location
+15	variant
+16	length
+17	track temp
+18	air temp
+19	wind spd
+20	fl tyre temp
+21	fr tyre temp
+22	rl tyre temp
+23	rr tyre temp
+24	fl brake temp
+25	fr brake temp
+26	rl brake temp
+27	rr brake temp
+28	aero damage
+29	engine damage
+30	last lap time
+31	current s1
+32	current s2
+33	current s3
