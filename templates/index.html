@@ -20,11 +20,14 @@
 						<div class="navbar-header">		 
 							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 						 		<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-							</button> <a class="navbar-brand" href="#"><b>Project CARS </b>Web Telemetry <span class="badge">ALPHA</span></a>
+							</button>
+							<a class="navbar-brand" href="#">
+								<b>Project CARS</b> // Web Telemetry <span class="badge">ALPHA</span>
+							</a>
 						</div>
 				
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-							<button type="button" class="btn btn-default navbar-btn">Shut down</button>
+							<a href="/kill" class="btn btn-default navbar-btn" role="button">Shut down</a>
 						</div>
 				
 					</nav>
@@ -44,9 +47,9 @@
     							<p>Gear: <span id="gear">0000</span></p>
     							<hr>
     							<p>Oil Temperature: <span id="oil_temp">0000</span> &deg;C</p>
-    							<p>Oil Pressure: <span id="oil_pres">0000</span> KPa</p>
+    							<p>Oil Pressure: <span id="oil_pres">0000</span> kPa</p>
     							<p>Water Temperature: <span id="water_temp">0000</span> &deg;C</p>
-    							<p>Water Pressure: <span id="water_pres">0000</span> KPa</p>
+    							<p>Water Pressure: <span id="water_pres">0000</span> kPa</p>
   							</div>
 					</div>
 
@@ -152,7 +155,7 @@
   								<div class="graph" id="rpmPlot"></div>
 
   								<p>Throttle / Brake</p>
-  								<div class="graph" id="brakePlot"></div>
+  								<div class="graph" id="pedalPlot"></div>
   							</div>
 					</div>
 				</div>
@@ -161,6 +164,7 @@
 					<div class="panel panel-default">
   						<div class="panel-heading">Timings</div>
   							<div class="panel-body">
+  								<h2>Current lap: <span id="curr_lap_min">00</span>:<span id="curr_lap_sec">00</span></h2>
     							<table class="table" id="laptimes">
     								<tr>
     									<td>Lap</td>
@@ -181,19 +185,24 @@
 				setInterval("ajaxd()", 500);
 			});
 
+			// global data
+			var sData = 0;
+
 			// arrays for graphing
+			var graph_time = [];
 			var graph_speed = [];
 			var graph_rpm = [];
 			var graph_gear = [];
 			var graph_throttle_perc = [];
 			var graph_brake_perc = [];
 
-			var table_ref = document.getElementById('laptimes')
+			var table_ref = document.getElementById('laptimes');
 
 			function ajaxd() { 
 				var msg = $.ajax({type: "GET", url: "/getData", async: false}).responseText;
 				var sData = JSON.parse(msg);
 
+				// save data to plot
 				graph_speed.push(sData[2])
 				graph_rpm.push(sData[3])
 				graph_gear.push(sData[5])
@@ -203,7 +212,7 @@
 				// car
 				$("#car").text(sData[0]);
 				$("#class").text(sData[1]);
-				$("#speed").text((sData[2]/1609.344)*3600);
+				$("#speed").text(Math.floor((sData[2]/1609.344)*3600)); // m/s -> mph
 				$("#rpm").text(sData[3]);
 				$("#gear").text(sData[5]);
 				$("#oil_temp").text(sData[6]);
@@ -236,36 +245,50 @@
 				$("#aDamage").text(sData[28]);
 				$("#eDamage").text(sData[29]);
 
-				/*
-				if (sData[30] == 0) {
-					lap_update();
-				} */
+				// times
+				var min = Math.floor(sData[34] / 60);
+				var sec = (sData[34] % 60).toFixed(2);
+				$("#curr_lap_min").text(min);
+				$("#curr_lap_sec").text(sec);
+
+				// at start of new lap
+				if (sData[34] <= 1) {
+					// console.log(graph_speed);
+					lap_update(sData[30], sData[31], sData[32], sData[33]);
+				} 
 			}
 
-			/*
-			function lap_update() {
+			function lap_update(lap_item, s1_item, s2_item, s3_item) {
 				// plot graphs
+				speedPlot = document.getElementById('speedPlot');
+				Plotly.plot(speedPlot, [{ x: graph_time, y: graph_speed, mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});
+
+				rpmPlot = document.getElementById('rpmPlot');
+				Plotly.plot(rpmPlot, [{ x: graph_time, y: graph_rpm, mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});
+
+				pedalPlot = document.getElementById('pedalPlot');
+				Plotly.plot(pedalPlot, [{ x: graph_time, y: graph_throttle_perc, mode: 'lines', line: { width: 1 } }, { x: graph_time, y: graph_brake_perc, mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});
+
+				// append times to table
 				var new_row = table_ref.insertRow(table_ref.rows.length);
 
+				console.log(lap_item);
 				var new_cell_0 = new_row.insertCell(0);
-				var data  = document.createTextNode(sData[30]);
+				var data0 = document.createTextNode(lap_item.toFixed(2));
 				new_cell_0.appendChild(data0);
 
 				var new_cell_1 = new_row.insertCell(1);
-				var data1 = document.createTextNode(sData[31]);
+				var data1 = document.createTextNode(s1_item.toFixed(2));
 				new_cell_1.appendChild(data1);
 
 				var new_cell_2 = new_row.insertCell(2);
-				var data2 = document.createTextNode(sData[32]);
+				var data2 = document.createTextNode(s2_item.toFixed(2));
 				new_cell_2.appendChild(data2);
 
 				var new_cell_3 = new_row.insertCell(3);
-				var data3 = document.createTextNode(sData[33]);
+				var data3 = document.createTextNode(s3_item.toFixed(2));
 				new_cell_3.appendChild(data3);
-			} */
-
-			speedPlot = document.getElementById('speedPlot');
-			Plotly.plot(speedPlot, [{ x: [1, 2, 3, 4, 5], y: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});
+			} 
         </script>
 	</body>
 </html>

@@ -4,7 +4,7 @@
 # YEAR 2016
 
 from flask import Flask, render_template, request
-import pcarsListener, json
+import pcarsListener, json, os
 
 app = Flask(__name__)
 
@@ -48,6 +48,7 @@ def getData():
 	s1_time = 0
 	s2_time = 0
 	s3_time = 0
+	curr_time = pcarsListener.getChannel("currentTime")
 
 	return json.dumps([	car,
 						car_class,
@@ -82,11 +83,13 @@ def getData():
 						lap_time,
 						s1_time,
 						s2_time,
-						s3_time])
+						s3_time,
+						curr_time])
 
 @app.route('/kill')
 def kill():
 	pcarsListener.terminate()
+	os.system('taskkill /im python.exe /t /F') # HORRIBLE TEMPORARY HACK
 	return 0
 
 if __name__ == "__main__":

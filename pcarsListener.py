@@ -22,7 +22,7 @@ def getChannel(channel):
 	if currentPacket != None:
 		return currentPacket.getValue(channel)
 
-def getTyre(number, channel)
+def getTyre(number, channel):
 	if currentPacket != None:
 		return currentPacket.tyres[number][channel]
 
