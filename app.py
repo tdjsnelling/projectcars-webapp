@@ -45,9 +45,9 @@ def getData():
 	aero_dmg = pcarsListener.getChannel("aeroDamage")
 	engine_dmg = pcarsListener.getChannel("engineDamage")
 	lap_time = pcarsListener.getChannel("lastLapTime")
-	s1_time = 0
-	s2_time = 0
-	s3_time = 0
+	s1_time = pcarsListener.getChannel("currentSector1Time")
+	s2_time = pcarsListener.getChannel("currentSector2Time")
+	s3_time = pcarsListener.getChannel("currentSector3Time")
 	curr_time = pcarsListener.getChannel("currentTime")
 
 	return json.dumps([	car,
@@ -93,4 +93,4 @@ def kill():
 	return 0
 
 if __name__ == "__main__":
-	app.run(debug = True, host='localhost', port=8080, passthrough_errors=True)
+	app.run(debug = True, host='0.0.0.0', port=8080, passthrough_errors=True)

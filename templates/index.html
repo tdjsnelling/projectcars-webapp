@@ -7,6 +7,7 @@
 		<link href="static/css/bootstrap.min.css" rel="stylesheet">
 		<link href="../static/css/bootstrap.min.css" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<script src="../static/js/bootstrap.min.js"></script>
 		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 		<title>Project CARS</title>
@@ -22,12 +23,15 @@
 						 		<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 							</button>
 							<a class="navbar-brand" href="#">
-								<b>Project CARS</b> // Web Telemetry <span class="badge">ALPHA</span>
+								<b>Project CARS</b> // Web Telemetry <span class="badge">ALPHA</span> 
 							</a>
 						</div>
 				
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<a href="/" class="btn btn-default navbar-btn" role="button">Reset</a>
 							<a href="/kill" class="btn btn-default navbar-btn" role="button">Shut down</a>
+
+							<button type="button" class="btn btn-default navbar-btn navbar-right" data-toggle="modal" data-target="#aboutModal">About</button>
 						</div>
 				
 					</nav>
@@ -135,7 +139,6 @@
 												<p>Rear Right</p>
 											</li>
 										</ul>
-
 										<p>Aero Damage: <span id="aDamage">000</span></p>
 										<p>Engine Damage: <span id="eDamage">000</span></p>
 		  							</div>
@@ -177,16 +180,47 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel">
+  				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">About</h4>
+						</div>
+						<div class="modal-body">
+							<h2>Project CARS Web Telemetry</h2>
+							<h4>Tom Snelling 2016</h4>
+							<hr>
+							<p>This is a small web app that provides telemetry to the Project CARS game via UDP stream.</p>
+							<p>Usage is quite self explanatory, just connect the machine running this app to the same network as your PS4/XB1 and you're good to go.</p>
+							<p>The graphs (rendered after first full lap) can be interacted with, and expanded by clicking the save icon when hovered over.</p>
+							<hr>
+							<h4>Built with</h4>
+							<ul>
+								<li><a href="https://github.com/jamesremuscat/pcars">pcars - providing access to UDP game stream</a></li>
+								<li><a href="https://flask.pocoo.org">flask - brilliant python web framework</a></li>
+								<li><a href="https://getbootstrap.com/">bootstrap - html/css layouts made simple</a></li>
+								<li><a href="https://plot.ly/">plotly.js - easy, good looking graphs</a></li>
+							</ul>
+      					</div>
+    				</div>
+  				</div>
+			</div>
 		</div>
 
 		<script>
 			$(document).ready(function() {
 				ajaxd();
-				setInterval("ajaxd()", 500);
+				setInterval("ajaxd()", 250);
 			});
 
 			// global data
 			var sData = 0;
+			// var udpRate = 32;
+			var speedPlot = document.getElementById('speedPlot');
+			var rpmPlot = document.getElementById('rpmPlot');
+			var pedalPlot = document.getElementById('pedalPlot');
 
 			// arrays for graphing
 			var graph_time = [];
@@ -203,11 +237,12 @@
 				var sData = JSON.parse(msg);
 
 				// save data to plot
-				graph_speed.push(sData[2])
-				graph_rpm.push(sData[3])
-				graph_gear.push(sData[5])
-				graph_throttle_perc.push(sData[10])
-				graph_brake_perc.push(sData[11])
+				graph_time.push(sData[34]);
+				graph_speed.push(Math.floor((sData[2]/1609.344)*3600));
+				graph_rpm.push(sData[3]);
+				graph_gear.push(sData[5]);
+				graph_throttle_perc.push(sData[10]);
+				graph_brake_perc.push(sData[11]);
 
 				// car
 				$("#car").text(sData[0]);
@@ -245,6 +280,14 @@
 				$("#aDamage").text(sData[28]);
 				$("#eDamage").text(sData[29]);
 
+				// brake & tyre temp warnings
+				if (sData[20] > 120) {
+					$("#fl_tyre_temp").css("background-color", "#f00");
+				}
+				else {
+					$("#fl_tyre_temp").css("background-color", "#222");
+				}
+
 				// times
 				var min = Math.floor(sData[34] / 60);
 				var sec = (sData[34] % 60).toFixed(2);
@@ -252,27 +295,24 @@
 				$("#curr_lap_sec").text(sec);
 
 				// at start of new lap
-				if (sData[34] <= 1) {
-					// console.log(graph_speed);
+				if (sData[34] > 0 && sData[34] <= 0.3) {
 					lap_update(sData[30], sData[31], sData[32], sData[33]);
 				} 
 			}
 
 			function lap_update(lap_item, s1_item, s2_item, s3_item) {
+				// last ~2 items tend to fall into new lap, remove them
+				graph_time.pop();
+				graph_time.pop();
+
 				// plot graphs
-				speedPlot = document.getElementById('speedPlot');
-				Plotly.plot(speedPlot, [{ x: graph_time, y: graph_speed, mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});
-
-				rpmPlot = document.getElementById('rpmPlot');
-				Plotly.plot(rpmPlot, [{ x: graph_time, y: graph_rpm, mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});
-
-				pedalPlot = document.getElementById('pedalPlot');
-				Plotly.plot(pedalPlot, [{ x: graph_time, y: graph_throttle_perc, mode: 'lines', line: { width: 1 } }, { x: graph_time, y: graph_brake_perc, mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});
+				Plotly.newPlot(speedPlot, [{ x: graph_time, y: graph_speed, mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});
+				Plotly.newPlot(rpmPlot, [{ x: graph_time, y: graph_rpm, mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});
+				Plotly.newPlot(pedalPlot, [{ x: graph_time, y: graph_throttle_perc, mode: 'lines', line: { width: 1 } }, { x: graph_time, y: graph_brake_perc, mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }, showlegend: false });
 
 				// append times to table
 				var new_row = table_ref.insertRow(table_ref.rows.length);
 
-				console.log(lap_item);
 				var new_cell_0 = new_row.insertCell(0);
 				var data0 = document.createTextNode(lap_item.toFixed(2));
 				new_cell_0.appendChild(data0);
@@ -288,6 +328,13 @@
 				var new_cell_3 = new_row.insertCell(3);
 				var data3 = document.createTextNode(s3_item.toFixed(2));
 				new_cell_3.appendChild(data3);
+
+				graph_time = [];
+				graph_speed = [];
+				graph_rpm = [];
+				graph_gear = [];
+				graph_throttle_perc = [];
+				graph_brake_perc = [];
 			} 
         </script>
 	</body>

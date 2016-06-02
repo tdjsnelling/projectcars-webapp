@@ -12,8 +12,16 @@ body {
 	padding-right: 10px;
 }
 
+.navbar-right {
+	margin-right: 20px;
+}
+
 b {
 	color: #01c78c;
+}
+
+ul .row, .list-group {
+	margin: 15px;
 }
 
 .progress-bar {
