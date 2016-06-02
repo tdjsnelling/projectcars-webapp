@@ -6,7 +6,7 @@
 from pcars.enums import GameState, SessionState, RaceState, TyreFlags, FlagColour, Sector, PitMode, PitSchedule
 from pcars.packet import Packet, TelemetryPacket
 from StringIO import StringIO
-import socket, sys, threading
+import socket, threading
 
 addr = ''
 port = 5606
@@ -22,10 +22,13 @@ def getChannel(channel):
 	if currentPacket != None:
 		return currentPacket.getValue(channel)
 
+def getTyre(number, channel)
+	if currentPacket != None:
+		return currentPacket.tyres[number][channel]
+
 def terminate():
 	udp_isopen = False
 	udpSocket.close()
-	sys.exit(0)
 
 def mainloop():
 	global currentPacket, udp_isopen

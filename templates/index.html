@@ -4,7 +4,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="static/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../static/css/bootstrap.min.css" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
@@ -23,7 +24,7 @@
 						</div>
 				
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-							
+							<button type="button" class="btn btn-default navbar-btn">Shut down</button>
 						</div>
 				
 					</nav>
@@ -38,14 +39,14 @@
   								<p>Car: <span id="car">0000</span></p>
   								<p>Class: <span id="class">0000</span></p>
   								<hr>
-    							<p>Speed: <span id="speed">0000</span></p>
+    							<p>Speed: <span id="speed">0000</span> MPH</p>
     							<p>RPM: <span id="rpm">0000</span></p>
     							<p>Gear: <span id="gear">0000</span></p>
     							<hr>
-    							<p>Oil Temperature: <span id="gear">0000</span></p>
-    							<p>Oil Pressure: <span id="gear">0000</span></p>
-    							<p>Water Temperature: <span id="gear">0000</span></p>
-    							<p>Water Pressure: <span id="gear">0000</span></p>
+    							<p>Oil Temperature: <span id="oil_temp">0000</span> &deg;C</p>
+    							<p>Oil Pressure: <span id="oil_pres">0000</span> KPa</p>
+    							<p>Water Temperature: <span id="water_temp">0000</span> &deg;C</p>
+    							<p>Water Pressure: <span id="water_pres">0000</span> KPa</p>
   							</div>
 					</div>
 
@@ -56,23 +57,17 @@
 		  							<div class="panel-body">
 		  								<p>Throttle %</p>
 		  								<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-												<span class="sr-only">60% Complete</span>
-											</div>
+											<div class="progress-bar" role="progressbar" id="throttle_perc" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
 										</div>
 
 										<p>Brake %</p>
 		  								<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-												<span class="sr-only">60% Complete</span>
-											</div>
+											<div class="progress-bar" role="progressbar" id="brake_perc" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
 										</div>
 
 										<p>Fuel Level</p>
 		  								<div class="progress">
-											<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-												<span class="sr-only">60% Complete</span>
-											</div>
+											<div class="progress-bar" role="progressbar" id="fuel_perc" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
 										</div>
 		  							</div>
 		  					</div>
@@ -86,10 +81,10 @@
   							<div class="panel-body">
   								<p>Location: <span id="location">0000</span></p>
   								<p>Variant: <span id="variant">0000</span></p>
-  								<p>Length: <span id="length">0000</span></p>
-    							<p>Track Temp.: <span id="tTemp">0000</span></p>
-    							<p>Air Temp.: <span id="aTemp">0000</span></p>
-    							<p>Wind Speed: <span id="wSpeed">0000</span></p>
+  								<p>Length: <span id="length">0000</span> m</p>
+    							<p>Track Temp.: <span id="tTemp">0000</span> &deg;C</p>
+    							<p>Air Temp.: <span id="aTemp">0000</span> &deg;C</p>
+    							<p>Wind Speed: <span id="wSpeed">0000</span> m/s</p>
   							</div>
 					</div>
 
@@ -98,42 +93,42 @@
 							<div class="panel panel-default">
 		  						<div class="panel-heading">Car Diagnostics</div>
 		  							<div class="panel-body">
-		    							<p>Tyre Temperature</p>
+		    							<p>Tyre Temperature (&deg;C)</p>
 		    							<ul class="list-group row">
 											<li class="list-group-item col-xs-6">
-												<span class="badge">000</span>
+												<span class="badge" id="fl_tyre_temp">000</span>
 												<p>Front Left</p>
 											</li>
 											<li class="list-group-item col-xs-6">
-												<span class="badge">000</span>
+												<span class="badge" id="fr_tyre_temp">000</span>
 												<p>Front Right</p>
 											</li>
 											<li class="list-group-item col-xs-6">
-												<span class="badge">000</span>
+												<span class="badge" id="rl_tyre_temp">000</span>
 												<p>Rear Left</p>
 											</li>
 											<li class="list-group-item col-xs-6">
-												<span class="badge">000</span>
+												<span class="badge" id="rr_tyre_temp">000</span>
 												<p>Rear Right</p>
 											</li>
 										</ul>
 
-										<p>Brake Temperature</p>
+										<p>Brake Temperature (&deg;C)</p>
 		    							<ul class="list-group row">
 											<li class="list-group-item col-xs-6">
-												<span class="badge">000</span>
+												<span class="badge" id="fl_brake_temp">000</span>
 												<p>Front Left</p>
 											</li>
 											<li class="list-group-item col-xs-6">
-												<span class="badge">000</span>
+												<span class="badge" id="fr_brake_temp">000</span>
 												<p>Front Right</p>
 											</li>
 											<li class="list-group-item col-xs-6">
-												<span class="badge">000</span>
+												<span class="badge" id="rl_brake_temp">000</span>
 												<p>Rear Left</p>
 											</li>
 											<li class="list-group-item col-xs-6">
-												<span class="badge">000</span>
+												<span class="badge" id="rr_brake_temp">000</span>
 												<p>Rear Right</p>
 											</li>
 										</ul>
@@ -166,18 +161,12 @@
 					<div class="panel panel-default">
   						<div class="panel-heading">Timings</div>
   							<div class="panel-body">
-    							<table class="table">
+    							<table class="table" id="laptimes">
     								<tr>
     									<td>Lap</td>
     									<td>Split 1</td>
     									<td>Split 2</td>
     									<td>Split 3</td>
-    								</tr>
-    								<tr>
-    									<td>00.000</td>
-    									<td>00.000</td>
-    									<td>00.000</td>
-    									<td>00.000</td>
     								</tr>
     							</table>
   							</div>
@@ -199,27 +188,81 @@
 			var graph_throttle_perc = [];
 			var graph_brake_perc = [];
 
+			var table_ref = document.getElementById('laptimes')
+
 			function ajaxd() { 
 				var msg = $.ajax({type: "GET", url: "/getData", async: false}).responseText;
 				var sData = JSON.parse(msg);
 
-				graph_speed.push()
-				graph_rpm.push()
-				graph_gear.push()
-				graph_throttle_perc.push()
-				graph_brake_perc.push()
+				graph_speed.push(sData[2])
+				graph_rpm.push(sData[3])
+				graph_gear.push(sData[5])
+				graph_throttle_perc.push(sData[10])
+				graph_brake_perc.push(sData[11])
 
-				$("#speed").text(sData[0]);
+				// car
+				$("#car").text(sData[0]);
+				$("#class").text(sData[1]);
+				$("#speed").text((sData[2]/1609.344)*3600);
+				$("#rpm").text(sData[3]);
+				$("#gear").text(sData[5]);
+				$("#oil_temp").text(sData[6]);
+				$("#oil_pres").text(sData[7]);
+				$("#water_temp").text(sData[8]);
+				$("#water_pres").text(sData[9]);
 
-				if (/* laptime */ == 0) {
+				// visuals
+				$("#throttle_perc").css("width", sData[10]+"%");
+				$("#brake_perc").css("width", sData[11]+"%");
+				$("#fuel_perc").css("width", (sData[12]*100)+"%");
+
+				// track
+				$("#location").text(sData[14]);
+				$("#variant").text(sData[15]);
+				$("#length").text(sData[16]);
+				$("#tTemp").text(sData[17]);
+				$("#aTemp").text(sData[18]);
+				$("#wSpeed").text(sData[19]);
+
+				// diagnostics
+				$("#fl_tyre_temp").text(sData[20]);
+				$("#fr_tyre_temp").text(sData[21]);
+				$("#rl_tyre_temp").text(sData[22]);
+				$("#rr_tyre_temp").text(sData[23]);
+				$("#fl_brake_temp").text(sData[24]);
+				$("#fr_brake_temp").text(sData[25]);
+				$("#rl_brake_temp").text(sData[26]);
+				$("#rr_brake_temp").text(sData[27]);
+				$("#aDamage").text(sData[28]);
+				$("#eDamage").text(sData[29]);
+
+				/*
+				if (sData[30] == 0) {
 					lap_update();
-				}
+				} */
 			}
 
+			/*
 			function lap_update() {
 				// plot graphs
-				// append times
-			}
+				var new_row = table_ref.insertRow(table_ref.rows.length);
+
+				var new_cell_0 = new_row.insertCell(0);
+				var data  = document.createTextNode(sData[30]);
+				new_cell_0.appendChild(data0);
+
+				var new_cell_1 = new_row.insertCell(1);
+				var data1 = document.createTextNode(sData[31]);
+				new_cell_1.appendChild(data1);
+
+				var new_cell_2 = new_row.insertCell(2);
+				var data2 = document.createTextNode(sData[32]);
+				new_cell_2.appendChild(data2);
+
+				var new_cell_3 = new_row.insertCell(3);
+				var data3 = document.createTextNode(sData[33]);
+				new_cell_3.appendChild(data3);
+			} */
 
 			speedPlot = document.getElementById('speedPlot');
 			Plotly.plot(speedPlot, [{ x: [1, 2, 3, 4, 5], y: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], mode: 'lines', line: { width: 1 } }], { margin: { l: 30, r: 30, b: 30, t: 0, pad: 0 }});

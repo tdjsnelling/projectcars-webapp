@@ -16,73 +16,9 @@ b {
 	color: #01c78c;
 }
 
-.btn-file {
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    outline: none;
-    background: white;
-    cursor: inherit;
-    display: block;
-}
-
-textarea:focus, input:focus, input[type]:focus, .styled-select:focus, .uneditable-input:focus {   
-    border-color: rgba(1, 199, 140, 0.8);
-    box-shadow: 0 1px 1px rgba(1, 199, 140, 0.075) inset, 0 0 8px rgba(1, 199, 140, 0.6);
-    outline: 0 none;
-}
-
-.btn-info {
-	background-color: #01c78c;
-	border-color: #01c78c;
-}
-
-.btn-info:hover {
-	background-color: #00d998;
-	border-color: #00d998;
-}
-
-.btn-info:focus:active {
-	background-color: #00d998;
-	border-color: #00d998;
-}
-
-.panel-success {
-	border-color: #01c78c;
-}
-
-.panel-success>.panel-heading {
-	color: #f0f0f0;
-	background-color: #01c78c;
-	border-color: #01c78c;
-}
-
-.panel-success>.panel-heading+.panel-collapse>.panel-body {
-	border-top-color: #d6e9c6
-}
-
-.panel-success>.panel-heading .badge {
-	color: #dff0d8;
-	background-color: #3c763d;
-}
-
-.panel-success>.panel-footer+.panel-collapse>.panel-body {
-	border-bottom-color:#d6e9c6
-}
-
-.list-group-item-text {
-	color: #01c78c;
+.progress-bar {
+	background-color: #01c78c !important;
+  	background-image: none;
 }
 
 ::selection {
