@@ -24,8 +24,12 @@ ul .row, .list-group {
 	margin: 15px;
 }
 
+.list-group-item:first-child, .list-group-item:last-child {
+	border-radius: 0px;
+}
+
 .progress-bar {
-	background-color: #01c78c !important;
+	// background-color: #01c78c;
   	background-image: none;
 }
 
@@ -40,4 +44,11 @@ ul .row, .list-group {
 .graph {
 	height: 150px;
 	width: 100%;
+}
+
+#speedo {
+	padding: 0;
+	margin: auto;
+	display: block;
+	width: 300px;
 }

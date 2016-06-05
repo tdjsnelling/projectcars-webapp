@@ -33,3 +33,4 @@
 32	current s2
 33	current s3
 34	current lap time
+35	fastest lap time

@@ -123,8 +123,8 @@
 											</li>
 										</ul>
 										<hr>
-										<p>Aero Damage: <span id="aDamage">000</span></p>
-										<p>Engine Damage: <span id="eDamage">000</span></p>
+										<p>Aero Damage: <span id="aDamage">000</span>%</p>
+										<p>Engine Damage: <span id="eDamage">000</span>%</p>
 		  							</div>
 							</div>
 						</div>
@@ -201,6 +201,11 @@
 				setInterval("ajaxd()", 250);
 			});
 
+			// used to pad int with leading 0
+			function pad(number, digits) {
+				return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+			}
+
 			// global data
 			var sData = 0;
 			// var udpRate = 32;
@@ -219,7 +224,7 @@
 		        minValue    : 0,
 		        maxValue    : 220,
 		        majorTicks  : ['0','20','40','60','80','100','120','140','160','180','200','220'],
-		        minorTicks  : 2,
+		        minorTicks  : 4,
 		        strokeTicks : true,
 		        highlights  : [{ from : 160, to : 220, color : 'rgba(200, 50, 50, .75)' }],
 		        colors      : {
@@ -304,8 +309,15 @@
 				// $("#speed").text(Math.floor((sData[2]/1609.344)*3600)); // m/s -> mph
 				// $("#rpm").text(sData[3]);
 				// $("#gear").text(sData[5]);
-				$("#tacho").text(sData[3]);
+				$("#tacho").text(sData[3]+" RPM");
 				$("#tacho").css("width", ((sData[3]/sData[4])*100)+"%");
+				if (sData[3] > sData[4]) {
+					// redline
+					$("#tacho").css("background-color", "#ff4040");
+				}
+				else {
+					$("#tacho").css("background-color", "#01c78c");
+				}
 				$("#oil_temp").text(sData[6]);
 				$("#oil_pres").text(sData[7]);
 				$("#water_temp").text(sData[8]);
@@ -333,22 +345,28 @@
 				$("#fr_brake_temp").text(sData[25]);
 				$("#rl_brake_temp").text(sData[26]);
 				$("#rr_brake_temp").text(sData[27]);
-				$("#aDamage").text(sData[28]);
-				$("#eDamage").text(sData[29]);
+				$("#aDamage").text((sData[28]/255)*100);
+				$("#eDamage").text((sData[29]/255)*100);
 
 				// brake & tyre temp warnings
 				if (sData[20] > 120) {
 					$("#fl_tyre_temp").css("background-color", "#f00");
 				}
 				else {
-					$("#fl_tyre_temp").css("background-color", "#222");
+					$("#fl_tyre_temp").css("background-color", "#777");
 				}
 
-				// times
+				// current lap time
 				var min = Math.floor(sData[34] / 60);
 				var sec = (sData[34] % 60).toFixed(2);
-				$("#curr_lap_min").text(min);
-				$("#curr_lap_sec").text(sec);
+				$("#curr_lap_min").text(pad(min, 2));
+				$("#curr_lap_sec").text(pad(sec, 5));
+
+				// fastest lap time
+				var fMin = Math.floor(sData[35] / 60);
+				var fSec = (sData[35] % 60).toFixed(2);
+				$("#best_lap_min").text(pad(fMin, 2));
+				$("#best_lap_sec").text(pad(fSec, 5));
 
 				// at start of new lap
 				if (sData[34] > 0 && sData[34] <= 0.3) {

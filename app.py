@@ -49,6 +49,7 @@ def getData():
 	s2_time = pcarsListener.getChannel("currentSector2Time")
 	s3_time = pcarsListener.getChannel("currentSector3Time")
 	curr_time = pcarsListener.getChannel("currentTime")
+	fastest_time = pcarsListener.getChannel("bestLapTime")
 
 	return json.dumps([	car,
 						car_class,
@@ -84,7 +85,8 @@ def getData():
 						s1_time,
 						s2_time,
 						s3_time,
-						curr_time])
+						curr_time,
+						fastest_time])
 
 @app.route('/kill')
 def kill():
