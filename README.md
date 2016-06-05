@@ -11,3 +11,11 @@ Download and install the pcars library from the link above, as well as flask (`p
 Clone this repo, `cd` into it and run `python app.py`.
 
 Navigate your browser to `localhost:8080` and start using! Make sure UDP is enabled in game.
+
+## screenshots
+
+On desktop:
+![desktop01](screenshot/desktop01.png)
+
+And on mobile:
+![mobile01](screenshot/mobile01.png)

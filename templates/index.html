@@ -6,9 +6,15 @@
 		
 		<link href="static/css/bootstrap.min.css" rel="stylesheet">
 		<link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-		<script src="../static/js/bootstrap.min.js"></script>
 		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+		<script src="static/js/bootstrap.min.js"></script>
+		<script src="../static/js/bootstrap.min.js"></script>
+
+		<script src="static/js/gauge.min.js"></script>
+		<script src="../static/js/gauge.min.js"></script>
 
 		<title>Project CARS</title>
 	</head>
@@ -43,58 +49,35 @@
 					<div class="panel panel-default">
   						<div class="panel-heading">Car Information</div>
   							<div class="panel-body">
-  								<p>Car: <span id="car">0000</span></p>
-  								<p>Class: <span id="class">0000</span></p>
-  								<hr>
-    							<p>Speed: <span id="speed">0000</span> MPH</p>
-    							<p>RPM: <span id="rpm">0000</span></p>
-    							<p>Gear: <span id="gear">0000</span></p>
+  								<canvas id="speedo"></canvas>
+  								<div class="progress">
+									<div class="progress-bar" role="progressbar" id="tacho" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">0 RPM</div>
+								</div>
     							<hr>
     							<p>Oil Temperature: <span id="oil_temp">0000</span> &deg;C</p>
     							<p>Oil Pressure: <span id="oil_pres">0000</span> kPa</p>
     							<p>Water Temperature: <span id="water_temp">0000</span> &deg;C</p>
     							<p>Water Pressure: <span id="water_pres">0000</span> kPa</p>
+    							<hr>
+    							<p>Throttle %</p>
+		  						<div class="progress">
+									<div class="progress-bar" role="progressbar" id="throttle_perc" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+								</div>
+
+								<p>Brake %</p>
+		  						<div class="progress">
+									<div class="progress-bar" role="progressbar" id="brake_perc" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+								</div>
+
+								<p>Fuel Level</p>
+  								<div class="progress">
+									<div class="progress-bar" role="progressbar" id="fuel_perc" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+								</div>
   							</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-12">
-							<div class="panel panel-default">
-		  						<div class="panel-heading">Live Visuals</div>
-		  							<div class="panel-body">
-		  								<p>Throttle %</p>
-		  								<div class="progress">
-											<div class="progress-bar" role="progressbar" id="throttle_perc" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
-										</div>
-
-										<p>Brake %</p>
-		  								<div class="progress">
-											<div class="progress-bar" role="progressbar" id="brake_perc" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
-										</div>
-
-										<p>Fuel Level</p>
-		  								<div class="progress">
-											<div class="progress-bar" role="progressbar" id="fuel_perc" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
-										</div>
-		  							</div>
-		  					</div>
-		  				</div>
 					</div>
 				</div>
 
 				<div class="col-md-3">
-					<div class="panel panel-default">
-  						<div class="panel-heading">Track Information</div>
-  							<div class="panel-body">
-  								<p>Location: <span id="location">0000</span></p>
-  								<p>Variant: <span id="variant">0000</span></p>
-  								<p>Length: <span id="length">0000</span> m</p>
-    							<p>Track Temp.: <span id="tTemp">0000</span> &deg;C</p>
-    							<p>Air Temp.: <span id="aTemp">0000</span> &deg;C</p>
-    							<p>Wind Speed: <span id="wSpeed">0000</span> m/s</p>
-  							</div>
-					</div>
-
 					<div class="row">
 						<div class="col-md-12">
 							<div class="panel panel-default">
@@ -139,6 +122,7 @@
 												<p>Rear Right</p>
 											</li>
 										</ul>
+										<hr>
 										<p>Aero Damage: <span id="aDamage">000</span></p>
 										<p>Engine Damage: <span id="eDamage">000</span></p>
 		  							</div>
@@ -151,13 +135,13 @@
 					<div class="panel panel-default">
   						<div class="panel-heading">Graphs</div>
   							<div class="panel-body">
-  								<p>Speed</p>
+  								<p>Speed (MPH)</p>
   								<div class="graph" id="speedPlot"></div>
 
-  								<p>Engine RPM / Gear</p>
+  								<p>Engine RPM</p>
   								<div class="graph" id="rpmPlot"></div>
 
-  								<p>Throttle / Brake</p>
+  								<p>Throttle / Brake (%)</p>
   								<div class="graph" id="pedalPlot"></div>
   							</div>
 					</div>
@@ -168,6 +152,7 @@
   						<div class="panel-heading">Timings</div>
   							<div class="panel-body">
   								<h2>Current lap: <span id="curr_lap_min">00</span>:<span id="curr_lap_sec">00</span></h2>
+  								<h2>Fastest lap: <span id="best_lap_min">00</span>:<span id="best_lap_sec">00</span></h2>
     							<table class="table" id="laptimes">
     								<tr>
     									<td>Lap</td>
@@ -202,6 +187,7 @@
 								<li><a href="https://flask.pocoo.org">flask - brilliant python web framework</a></li>
 								<li><a href="https://getbootstrap.com/">bootstrap - html/css layouts made simple</a></li>
 								<li><a href="https://plot.ly/">plotly.js - easy, good looking graphs</a></li>
+								<li><a href="https://github.com/Mikhus/canv-gauge">canv-gauge - native html5 canvas gauges.</a>
 							</ul>
       					</div>
     				</div>
@@ -222,6 +208,70 @@
 			var rpmPlot = document.getElementById('rpmPlot');
 			var pedalPlot = document.getElementById('pedalPlot');
 
+			// options for speedometer
+		    var speedGauge = new Gauge({
+		        renderTo    : 'speedo',
+		        width       : 300,
+		        height      : 200,
+		        glow        : false,
+		        units       : 'MPH',
+		        title       : false,
+		        minValue    : 0,
+		        maxValue    : 220,
+		        majorTicks  : ['0','20','40','60','80','100','120','140','160','180','200','220'],
+		        minorTicks  : 2,
+		        strokeTicks : true,
+		        highlights  : [{ from : 160, to : 220, color : 'rgba(200, 50, 50, .75)' }],
+		        colors      : {
+		            plate      : '#fff',
+		            majorTicks : '#222',
+		            minorTicks : '#111',
+		            title      : '#111',
+		            units      : '#111',
+		            numbers    : '#111',
+		            needle     : {
+		                start : 'rgba(200, 50, 50, .75)',
+		                end : 'rgba(200, 50, 50, .75)',
+		                circle: {
+		                    outerStart: 'rgba(200, 200, 200, 1)',
+		                    outerEnd: 'rgba(200, 200, 200, 1)'
+		                },
+		                shadowUp: false,
+		                shadowDown: false
+		            }
+
+		        },
+		        valueBox: {
+		            visible: false
+		        },
+		        valueText: {
+		            visible: false
+		        },
+		        circles: {
+		            outerVisible: false,
+		            middleVisible: false,
+		            innerVisible: false
+		        },
+		        needle: {
+		            type: 'arrow',
+		            width: 2,
+		            end: 72,
+		            circle: {
+		                size: 7,
+		                inner: false,
+		                outer: true
+		            }
+		        },
+		        animation: {
+		            delay: 0,
+		            duration: 250,
+		            fn: 'linear'
+		        }
+		    });
+
+		    speedGauge.draw();
+
+
 			// arrays for graphing
 			var graph_time = [];
 			var graph_speed = [];
@@ -236,37 +286,43 @@
 				var msg = $.ajax({type: "GET", url: "/getData", async: false}).responseText;
 				var sData = JSON.parse(msg);
 
+				// update gauges
+				speedGauge.setValue(Math.floor((sData[2]/1609.344)*3600));
+				speedGauge.draw();
+
 				// save data to plot
 				graph_time.push(sData[34]);
 				graph_speed.push(Math.floor((sData[2]/1609.344)*3600));
 				graph_rpm.push(sData[3]);
 				graph_gear.push(sData[5]);
-				graph_throttle_perc.push(sData[10]);
-				graph_brake_perc.push(sData[11]);
+				graph_throttle_perc.push((sData[10]/255)*100);
+				graph_brake_perc.push((sData[11]/255)*100);
 
 				// car
-				$("#car").text(sData[0]);
-				$("#class").text(sData[1]);
-				$("#speed").text(Math.floor((sData[2]/1609.344)*3600)); // m/s -> mph
-				$("#rpm").text(sData[3]);
-				$("#gear").text(sData[5]);
+				// $("#car").text(sData[0]);
+				// $("#class").text(sData[1]);
+				// $("#speed").text(Math.floor((sData[2]/1609.344)*3600)); // m/s -> mph
+				// $("#rpm").text(sData[3]);
+				// $("#gear").text(sData[5]);
+				$("#tacho").text(sData[3]);
+				$("#tacho").css("width", ((sData[3]/sData[4])*100)+"%");
 				$("#oil_temp").text(sData[6]);
 				$("#oil_pres").text(sData[7]);
 				$("#water_temp").text(sData[8]);
 				$("#water_pres").text(sData[9]);
 
 				// visuals
-				$("#throttle_perc").css("width", sData[10]+"%");
-				$("#brake_perc").css("width", sData[11]+"%");
+				$("#throttle_perc").css("width", ((sData[10]/255)*100)+"%");
+				$("#brake_perc").css("width", ((sData[11]/255)*100)+"%");
 				$("#fuel_perc").css("width", (sData[12]*100)+"%");
 
 				// track
-				$("#location").text(sData[14]);
-				$("#variant").text(sData[15]);
-				$("#length").text(sData[16]);
-				$("#tTemp").text(sData[17]);
-				$("#aTemp").text(sData[18]);
-				$("#wSpeed").text(sData[19]);
+				// $("#location").text(sData[14]);
+				// $("#variant").text(sData[15]);
+				// $("#length").text(sData[16]);
+				// $("#tTemp").text(sData[17]);
+				// $("#aTemp").text(sData[18]);
+				// $("#wSpeed").text(sData[19]);
 
 				// diagnostics
 				$("#fl_tyre_temp").text(sData[20]);
