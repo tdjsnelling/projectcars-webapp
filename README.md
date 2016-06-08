@@ -12,6 +12,14 @@ Clone this repo, `cd` into it and run `python app.py`.
 
 Navigate your browser to `localhost:8080` and start using! Make sure UDP is enabled in game.
 
+## todo
+
+* stop incomplete laps being detected (lap time = -1.00)
+* find a better way to detect when a new lap is started
+* complete shut down method
+* colour code tyre/brake temperatures
+* create full (read: easy) installer
+
 ## screenshots
 
 On desktop:
