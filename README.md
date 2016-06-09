@@ -6,11 +6,10 @@ The project relies on the library [pcars](https://github.com/jamesremuscat/pcars
 
 ## usage
 
-Download and install the pcars library from the link above, as well as flask (`pip install flask`).
-
-Clone this repo, `cd` into it and run `python app.py`.
-
-Navigate your browser to `localhost:8080` and start using! Make sure UDP is enabled in game.
+1. Ensure you have Python 2.7 installed, as well as Flask - use `pip install flask`.
+2. Download and install the pcars library from the link above - it may require some more dependencies so install as needed.
+3. Download/clone this repo, `cd` into it and run `python app.py` from your terminal. If everything is installed fine you should see no errors.
+4. Navigate your browser to `localhost:8080` and start using! Make sure UDP is enabled in game.
 
 ## todo
 
