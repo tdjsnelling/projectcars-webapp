@@ -26,6 +26,12 @@ def getTyre(number, channel):
 	if currentPacket != None:
 		return currentPacket.tyres[number][channel]
 
+def getParticipant(channel):
+	if currentPacket != None:
+		p = currentPacket.participants[0]
+		return p[channel]
+
+
 def terminate():
 	udp_isopen = False
 	udpSocket.close()

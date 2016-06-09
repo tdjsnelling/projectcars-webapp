@@ -56,6 +56,8 @@ def getData():
 	s3_time = pcarsListener.getChannel("currentSector3Time")
 	curr_time = pcarsListener.getChannel("currentTime")
 	fastest_time = pcarsListener.getChannel("bestLapTime")
+	laps_completed = pcarsListener.getParticipant("lapsCompleted")
+	curr_lap = pcarsListener.getParticipant("currentLap")
 
 	return json.dumps([	car,
 						car_class,
@@ -92,13 +94,15 @@ def getData():
 						s2_time,
 						s3_time,
 						curr_time,
-						fastest_time])
+						fastest_time,
+						laps_completed,
+						curr_lap])
 
 @app.route('/kill')
 def kill():
 	pcarsListener.terminate()
 	shutdown_server()
-	return "OK", 200
+	return "Shutdown Successful", 418
 
 if __name__ == "__main__":
 	app.run(debug = True, host='0.0.0.0', port=8080, passthrough_errors=True)

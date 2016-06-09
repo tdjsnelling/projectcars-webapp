@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="theme-color" content="#01c78c">
 		
 		<link href="static/css/bootstrap.min.css" rel="stylesheet">
 
@@ -204,6 +205,7 @@
 
 			// global data
 			var sData = 0;
+			var laps_completed = 0;
 			// var udpRate = 32;
 			var speedPlot = document.getElementById('speedPlot');
 			var rpmPlot = document.getElementById('rpmPlot');
@@ -306,7 +308,7 @@
 				// $("#gear").text(sData[5]);
 				$("#tacho").text(sData[3]+" RPM");
 				$("#tacho").css("width", ((sData[3]/sData[4])*100)+"%");
-				if (sData[3] > sData[4]) {
+				if (sData[3] > sData[4]-50) {
 					// redline
 					$("#tacho").css("background-color", "#ff4040");
 				}
@@ -340,8 +342,8 @@
 				$("#fr_brake_temp").text(sData[25]);
 				$("#rl_brake_temp").text(sData[26]);
 				$("#rr_brake_temp").text(sData[27]);
-				$("#aDamage").text((sData[28]/255)*100);
-				$("#eDamage").text((sData[29]/255)*100);
+				$("#aDamage").text(((sData[28]/255)*100).toFixed(0));
+				$("#eDamage").text(((sData[29]/255)*100).toFixed(0));
 
 				// brake & tyre temp warnings
 				if (sData[20] > 120) {
@@ -363,10 +365,14 @@
 				$("#best_lap_min").text(pad(fMin, 2));
 				$("#best_lap_sec").text(pad(fSec, 5));
 
-				// at start of new lap - FIND A BETTER WAY OF DOING THIS
-				if (sData[34] > 0 && sData[34] <= 0.3) {
-					lap_update(sData[30], sData[31], sData[32], sData[33]);
+				// at start of new lap
+				if (sData[34] > 0) {
+					if (laps_completed != sData[36]) {
+						lap_update(sData[30], sData[31], sData[32], sData[33]);
+					}
 				} 
+
+				laps_completed = sData[36];
 			}
 
 			function lap_update(lap_item, s1_item, s2_item, s3_item) {
