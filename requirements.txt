@@ -1,0 +1,17 @@
+binio==1.2.3
+cryptography==1.2.3
+enum34==1.1.2
+Flask==0.10.1
+hurry.filesize==0.9
+idna==2.0
+itsdangerous==0.24
+Jinja2==2.8
+MarkupSafe==0.23
+matplotlib==1.4.3
+pcars==0.1.0.dev0
+py2exe==0.6.9
+pycparser==2.14
+pyparsing==2.0.3
+requests==2.7.0
+six==1.9.0
+Werkzeug==0.11.4
